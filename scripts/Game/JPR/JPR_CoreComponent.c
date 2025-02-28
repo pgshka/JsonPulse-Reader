@@ -1,7 +1,6 @@
 [EntityEditorProps(category: "GameScripted/GameMode", description: "")]
 class JPR_CoreComponentClass : SCR_BaseGameModeComponentClass
 {
-
 }
 
 class JPR_CoreComponent : SCR_BaseGameModeComponent
@@ -9,7 +8,9 @@ class JPR_CoreComponent : SCR_BaseGameModeComponent
 	protected static const float CHECK_PERIOD = 5;
 	protected static const string FILE_PATH = "$profile:JPR/temp.json";
 	
-	[Attribute(UIWidgets.Auto, category: "Commands")]
+	protected float m_fCheckDelay;
+	
+	[Attribute(UIWidgets.Auto)]
 	ref array<ref JPR_Command> m_aCommands;
 	
 	//------------------------------------------------------------------------------------------------
@@ -24,18 +25,15 @@ class JPR_CoreComponent : SCR_BaseGameModeComponent
 	//------------------------------------------------------------------------------------------------
 	override void EOnInit(IEntity owner)
 	{
-		Print("JPR-Core: Lauched");
 		ArmaReforgerScripted game = GetGame();
 		if (game && !game.InPlayMode())
 			return;
 		
 		if (!FileIO.FileExists(FILE_PATH)) {
-			PrintFormat("	Missing config file, it should be at '$profile:JPR/temp.json'.", level: LogLevel.ERROR);
+			PrintFormat("JPR-Core: Missing config file, it should be at '$profile:JPR/temp.json'.", level: LogLevel.ERROR);
 			return;
 		}
 	}
-
-	protected float m_fCheckDelay;
 	
 	//------------------------------------------------------------------------------------------------
 	override void EOnFrame(IEntity owner, float timeSlice)
@@ -73,8 +71,4 @@ class JPR_CoreComponent : SCR_BaseGameModeComponent
 				com.Init(args);
 		}
 	}
-	
-	//------------------------------------------------------------------------------------------------
-	// destructor
-	void ~JPR_CoreComponent() {}
 }
